@@ -12,10 +12,22 @@ async function createUser({ name, email, password, photo_url }: RegisterUser) {
     });
 };
 
+async function getUsers() {
+    return prisma.users.findMany();
+};
+
 async function findByEmail(email: string) {
     return prisma.users.findFirst({
         where: {
             email: email
+        },
+    });
+};
+
+async function findById(id: number) {
+    return prisma.users.findFirst({
+        where: {
+            id,
         },
     });
 };
@@ -37,9 +49,20 @@ async function createSession(id: number, token: string) {
     });
 };
 
+async function deleteUser(id: number) {
+    return prisma.users.delete({
+        where: {
+            id,
+        },
+    });
+};
+
 export const userRepositories = {
     createUser,
+    getUsers,
     findByEmail,
     findSession,
     createSession,
+    findById,
+    deleteUser,
 }

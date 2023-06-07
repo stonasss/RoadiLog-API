@@ -33,7 +33,22 @@ async function loginUser({ email, password }) {
     return userToken.token;
 }
 
+async function retrieveUsers() {
+    const result = await userRepositories.getUsers();
+    if (!result) throw errors.notFoundError();
+    return result;
+}
+
+async function deleteUser(id: number) {
+    const result = await userRepositories.findById(id);
+    if (!result) throw errors.notFoundError();
+    const deleted = await userRepositories.deleteUser(id);
+    return deleted;
+}
+
 export const userServices = {
     createUser,
     loginUser,
+    retrieveUsers,
+    deleteUser,
 }
