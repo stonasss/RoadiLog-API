@@ -1,6 +1,11 @@
 # RoadiLog-API
 
-This repository contains the API in use by RoadiLog. Its technologies include TypeScript, Postgres, Prisma, Express and Jest.
+This repository contains the API in use by RoadiLog.
+
+## Database Model
+<div align="center">
+  <img src="https://i.imgur.com/tzcTs37.jpg" alt="RoadiLog Database Model">
+</div>
 
 ## Stack :toolbox:
 
