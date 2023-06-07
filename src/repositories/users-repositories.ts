@@ -1,5 +1,5 @@
-import prisma from '../config/database'
-import { RegisterUser } from '../protocols/users'
+import prisma from '../config/database.js'
+import { RegisterUser } from '../utils/protocols.js'
 
 async function createUser({ name, email, password }: RegisterUser) {
     return prisma.users.create({

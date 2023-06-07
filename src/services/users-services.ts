@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { errors } from '../errors/index';
-import { userRepositories } from '../repositories/users-repositories';
+import { errors } from '../errors/index.js';
+import { userRepositories } from '../repositories/users-repositories.js';
 
 async function createUser({ name, email, password }) {
     const result = await userRepositories.findByEmail(email);

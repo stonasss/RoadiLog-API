@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,14 +10,37 @@ datasource db {
 model sessions {
   id      Int    @id(map: "sessions_pk") @default(autoincrement())
   user_id Int
-  token   String @unique @db.VarChar(255)
-  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk0")
+  token   String @unique @db.VarChar
 }
 
 model users {
-  id       Int        @id(map: "users_pk") @default(autoincrement())
-  name     String     @db.VarChar(255)
-  email    String     @unique @db.VarChar(150)
-  password String     @db.VarChar(50)
-  sessions sessions[]
+  id        Int     @id(map: "users_pk") @default(autoincrement())
+  name      String  @db.VarChar
+  email     String  @unique @db.VarChar
+  password  String  @db.VarChar
+  photo_url String? @db.VarChar
+}
+
+model merch {
+  id        Int    @id(map: "merch_pk") @default(autoincrement())
+  user_id   Int
+  photo_url String
+  title     String @db.VarChar
+  price     Int
+}
+
+model posts {
+  id          Int     @id(map: "posts_pk") @default(autoincrement())
+  user_id     Int
+  title       String  @db.VarChar
+  description String
+  link_url    String? @db.VarChar
+}
+
+model projects {
+  id          Int    @id(map: "projects_pk") @default(autoincrement())
+  user_id     Int
+  name        String @db.VarChar
+  instruments String @db.VarChar
+  description String @db.VarChar
 }
