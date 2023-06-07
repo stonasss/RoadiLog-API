@@ -1,10 +1,7 @@
 import bcrypt from 'bcrypt';
 import { errors } from '../errors/index.js';
 import { userRepositories } from '../repositories/users-repositories.js';
-<<<<<<< HEAD
 import jwt from 'jsonwebtoken';
-=======
->>>>>>> 42612d601ce1250339e141758dd8196f9bcee283
 
 async function createUser({ name, email, password, photo_url }) {
     const userExists = await userRepositories.findByEmail(email);
