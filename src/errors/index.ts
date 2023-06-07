@@ -1,7 +1,7 @@
-function invalidCredentialsError(message: string) {
+function invalidCredentialsError() {
     return {
         name: "InvalidCredentialsError",
-        message,
+        message: "Invalid credentials"
     };
 };
 
@@ -12,11 +12,10 @@ function unauthorizedError() {
     };
 };
 
-function duplicatedEmail(email: string) {
+function duplicatedEmail() {
     return {
         name: "DuplicatedEmailError",
         message: "E-mail already in use",
-        email,
     };
 };
 
