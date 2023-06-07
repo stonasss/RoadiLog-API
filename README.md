@@ -4,7 +4,7 @@ This repository contains the API in use by RoadiLog.
 
 ## Database Model
 <div align="center">
-  <img src="https://i.imgur.com/tzcTs37.jpg" alt="RoadiLog Database Model">
+  <img height="380" src="https://i.imgur.com/tzcTs37.jpg" alt="RoadiLog Database Model">
 </div>
 
 ## Stack :toolbox:
