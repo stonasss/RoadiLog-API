@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { errorHandler } from '../middlewares/error-handler-middlware';
-import { ApplicationError, NewPost } from '../utils/protocols';
-import { postSchema } from '../schemas/posts-schema';
-import { postServices } from '../services/posts-services';
-import { userServices } from '../services/users-services';
+import { errorHandler } from '../middlewares/error-handler-middlware.js';
+import { ApplicationError, NewPost } from '../utils/protocols.js';
+import { postSchema } from '../schemas/posts-schema.js';
+import { postServices } from '../services/posts-services.js';
+import { userServices } from '../services/users-services.js';
 
 async function newPost(req: Request, res: Response) {
     const post = req.body as NewPost;
