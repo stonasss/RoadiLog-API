@@ -3,7 +3,7 @@ import { errors } from '../errors/index.js';
 import { userRepositories } from '../repositories/users-repositories.js';
 import jwt from 'jsonwebtoken';
 
-async function createUser({ name, email, password, photo_url }) {
+async function createUser({ name, email, password, image }) {
     const userExists = await userRepositories.findByEmail(email);
 
     if (userExists) throw errors.duplicatedEmail();
@@ -13,7 +13,7 @@ async function createUser({ name, email, password, photo_url }) {
         name,
         email,
         password: hashedPasswd,
-        photo_url,
+        image,
     });
 };
 

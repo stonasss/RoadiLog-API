@@ -3,7 +3,7 @@ export type User = {
     name: string,
     email: string,
     password: string,
-    photo_url: string,
+    image: string,
     token: string,
 }
 

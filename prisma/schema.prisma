@@ -11,22 +11,28 @@ model sessions {
   id      Int    @id(map: "sessions_pk") @default(autoincrement())
   user_id Int
   token   String @unique @db.VarChar
+  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk0")
 }
 
 model users {
-  id        Int     @id(map: "users_pk") @default(autoincrement())
-  name      String  @db.VarChar
-  email     String  @unique @db.VarChar
-  password  String  @db.VarChar
-  photo_url String? @db.VarChar
+  id       Int        @id(map: "users_pk") @default(autoincrement())
+  name     String     @db.VarChar
+  email    String     @unique @db.VarChar
+  password String     @db.VarChar
+  image    String?    @db.VarChar
+  merch    merch[]
+  posts    posts[]
+  projects projects[]
+  sessions sessions[]
 }
 
 model merch {
-  id        Int    @id(map: "merch_pk") @default(autoincrement())
-  user_id   Int
-  photo_url String
-  title     String @db.VarChar
-  price     Int
+  id      Int    @id(map: "merch_pk") @default(autoincrement())
+  user_id Int
+  image   String
+  title   String @db.VarChar
+  price   Int
+  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "merch_fk0")
 }
 
 model posts {
@@ -34,7 +40,8 @@ model posts {
   user_id     Int
   title       String  @db.VarChar
   description String
-  link_url    String? @db.VarChar
+  link        String? @db.VarChar
+  users       users   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "posts_fk0")
 }
 
 model projects {
@@ -43,4 +50,5 @@ model projects {
   name        String @db.VarChar
   instruments String @db.VarChar
   description String @db.VarChar
+  users       users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projects_fk0")
 }

@@ -1,13 +1,13 @@
 import prisma from '../config/database.js'
 import { RegisterUser } from '../utils/protocols.js'
 
-async function createUser({ name, email, password, photo_url }: RegisterUser) {
+async function createUser({ name, email, password, image }: RegisterUser) {
     return prisma.users.create({
         data: {
             name,
             email,
             password,
-            photo_url,
+            image,
         },
     });
 };

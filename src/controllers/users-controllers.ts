@@ -15,10 +15,10 @@ async function register(req: Request, res: Response) {
     const { error } = registerSchema.validate(user);
 
     if (error) return res.status(httpStatus.BAD_REQUEST).send({ message: error.message });
-    const {name, email, password, photo_url} = req.body;
+    const {name, email, password, image} = req.body;
 
     try {
-        await userServices.createUser({ name, email, password, photo_url });
+        await userServices.createUser({ name, email, password, image });
         res.status(httpStatus.CREATED).send({});
     } catch (err) {
         const error = err as ApplicationError | Error;
