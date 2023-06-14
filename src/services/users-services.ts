@@ -39,6 +39,12 @@ async function retrieveUsers() {
     return result;
 }
 
+async function retrieveId(token: string) {
+    const result = await userRepositories.findByToken(token);
+    if (!result) throw errors.notFoundError();
+    return result.user_id;
+}
+
 async function deleteUser(id: number) {
     const result = await userRepositories.findById(id);
     if (!result) throw errors.notFoundError();
@@ -50,5 +56,6 @@ export const userServices = {
     createUser,
     loginUser,
     retrieveUsers,
+    retrieveId,
     deleteUser,
 }
