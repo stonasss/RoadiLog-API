@@ -40,10 +40,10 @@ async function findSessionById(userId: number) {
     });
 };
 
-async function findSessionByToken(token: string) {
+async function findSessionByToken(userToken: string) {
     return prisma.sessions.findFirst({
         where: {
-            token: token,
+            token: userToken,
         }
     })
 }

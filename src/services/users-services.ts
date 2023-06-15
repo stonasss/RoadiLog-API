@@ -37,8 +37,8 @@ async function retrieveUsers() {
     return result;
 }
 
-async function retrieveSession(userId: number) {
-    const result = await userRepositories.findById(userId);
+async function retrieveSession(userToken: string) {
+    const result = await userRepositories.findSessionByToken(userToken);
     if (!result) throw errors.notFoundError();
     return result.id;
 }

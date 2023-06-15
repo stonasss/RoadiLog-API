@@ -1,8 +1,8 @@
 import { errors } from "../errors/index.js";
 import { postRepositories } from "../repositories/posts-repositories.js";
 
-async function createPost({ title, description, link, userToken }) {
-    await postRepositories.createPost({ title, description, link, userToken });
+async function createPost({ title, description, link, userId }) {
+    await postRepositories.createPost({ title, description, link, userId });
 }
 
 async function getPosts() {

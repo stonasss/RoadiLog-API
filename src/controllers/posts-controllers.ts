@@ -16,10 +16,10 @@ async function newPost(req: Request, res: Response) {
     const { title, description, link } = req.body;
 
     try { 
-        const userOnline = await userServices.retrieveSession(userToken)
-        if (!userOnline) return res.status(httpStatus.UNAUTHORIZED);
+        const userId = await userServices.retrieveSession(userToken)
+        if (!userId) return res.status(httpStatus.UNAUTHORIZED);
 
-        await postServices.createPost({ title, description, link, userToken });
+        await postServices.createPost({ title, description, link, userId });
         res.status(httpStatus.CREATED).send({});
     } catch (err) {
         const error = err as ApplicationError | Error;
