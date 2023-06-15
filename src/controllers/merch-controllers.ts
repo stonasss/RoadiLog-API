@@ -39,7 +39,7 @@ async function deleteMerch(req: Request, res: Response) {
         if (merchExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         await merchServices.deleteMerch(id);
-        return res.status(httpStatus.OK).send("Project deleted");
+        return res.status(httpStatus.OK).send("Merch deleted");
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
