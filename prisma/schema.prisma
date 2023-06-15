@@ -9,9 +9,11 @@ datasource db {
 
 model sessions {
   id      Int    @id(map: "sessions_pk") @default(autoincrement())
-  user_id Int
+  userId Int
   token   String @unique @db.VarChar
-  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk0")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  users   users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_fk0")
 }
 
 model users {
@@ -20,6 +22,8 @@ model users {
   email    String     @unique @db.VarChar
   password String     @db.VarChar
   image    String?    @db.VarChar
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   merch    merch[]
   posts    posts[]
   projects projects[]
@@ -28,27 +32,27 @@ model users {
 
 model merch {
   id      Int    @id(map: "merch_pk") @default(autoincrement())
-  user_id Int
+  userId Int
   image   String
   title   String @db.VarChar
   price   Int
-  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "merch_fk0")
+  users   users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "merch_fk0")
 }
 
 model posts {
   id          Int     @id(map: "posts_pk") @default(autoincrement())
-  user_id     Int
+  userId     Int
   title       String  @db.VarChar
   description String
   link        String? @db.VarChar
-  users       users   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "posts_fk0")
+  users       users   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "posts_fk0")
 }
 
 model projects {
   id          Int    @id(map: "projects_pk") @default(autoincrement())
-  user_id     Int
+  userId     Int
   name        String @db.VarChar
   instruments String @db.VarChar
   description String @db.VarChar
-  users       users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projects_fk0")
+  users       users  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projects_fk0")
 }

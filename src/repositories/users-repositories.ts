@@ -32,20 +32,34 @@ async function findById(id: number) {
     });
 };
 
-async function findSession(id: number) {
+async function findSessionById(userId: number) {
     return prisma.sessions.findFirst({
         where: {
-            id,
+            id: userId,
         },
     });
 };
 
-async function createSession(id: number, token: string) {
-    return prisma.sessions.create({
-        data: {
-            user_id: id,
-            token: token,
+async function findSessionByToken(userToken: string) {
+    return prisma.sessions.findFirst({
+        where: {
+            token: userToken,
+        }
+    })
+}
+
+async function createSession(token: string, userId: number) {
+    return prisma.sessions.upsert({
+        where: {
+            id: userId,
         },
+        create: {
+            userId,
+            token
+        },
+        update: {
+            token
+        }
     });
 };
 
@@ -61,7 +75,8 @@ export const userRepositories = {
     createUser,
     getUsers,
     findByEmail,
-    findSession,
+    findSessionById,
+    findSessionByToken,
     createSession,
     findById,
     deleteUser,
