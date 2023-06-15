@@ -1,4 +1,3 @@
-import httpStatus from "http-status";
 import { errors } from '../errors/index.js';
 import { projectRepositories } from '../repositories/projects-repositories.js'
 
@@ -9,10 +8,12 @@ async function createProject({ name, instruments, description, userId }) {
 
 async function deleteProject(id: string) {
     const projectId = parseInt(id);
-    const project = await projectRepositories.deleteProject(projectId);
 
+    const project = await projectRepositories.getProjectById(projectId);
     if (!project) throw errors.notFoundError();
-    return project;
+
+    const result = await projectRepositories.deleteProject(projectId);
+    return result;
 };
 
 async function getProjectById(id: string) {
