@@ -29,10 +29,14 @@ async function newPost(req: Request, res: Response) {
 
 async function deletePost(req: Request, res: Response) {
     const { id } = req.params as CheckId;
+    const userToken = res.locals.user;
 
     try {
         const postExists = await postServices.getPostById(id);
         if (!postExists) return res.status(httpStatus.BAD_REQUEST).send("Post does not exist");
+
+        const userId = await userServices.retrieveSession(userToken)
+        if (postExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
 
         await postServices.deletePost(id);
         return res.status(httpStatus.OK).send("Post deleted")
