@@ -1,5 +1,5 @@
 import prisma from "../config/database.js";
-import { ValidProject } from "../utils/protocols.js";
+import { EditProject, ValidProject } from "../utils/protocols.js";
 
 
 async function createProject({ name, instruments, description, userId }: ValidProject) {
@@ -13,6 +13,43 @@ async function createProject({ name, instruments, description, userId }: ValidPr
     });
 };
 
+async function deleteProject(projectId: number) {
+    return prisma.projects.delete({
+        where: {
+            id: projectId,
+        },
+    });
+};
+
+async function updateProject({ name, instruments, description, projectId }: EditProject) {
+    return prisma.projects.update({
+        where: {
+            id: projectId,
+        },
+        data: {
+            name,
+            instruments,
+            description,
+        },
+    });
+};
+
+async function getProjects() {
+    return prisma.projects.findMany();
+};
+
+async function getProjectById(projectId: number) {
+    return prisma.projects.findFirst({
+        where: {
+            id: projectId,
+        },
+    });
+};
+
 export const projectRepositories = {
     createProject,
-}
+    deleteProject,
+    getProjects,
+    getProjectById,
+    updateProject,
+};

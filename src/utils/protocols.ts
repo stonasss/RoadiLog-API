@@ -43,5 +43,12 @@ export type Project = {
     userId: number,
 };
 
+export type EditProject = {
+    projectId: number,
+    name: string,
+    instruments: string,
+    description: string,
+};
+
 export type NewProject = Omit<Project, "id" | "userId">
 export type ValidProject = Omit<Project, "id">

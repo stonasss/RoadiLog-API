@@ -4,6 +4,9 @@ import { authValidate } from '../middlewares/auth-validation.js';
 
 const projectRoutes = Router();
 
+projectRoutes.get("/", projectControllers.getProjects);
 projectRoutes.post("/new", authValidate, projectControllers.newProject);
+projectRoutes.put("/:id", authValidate, projectControllers.updateProject);
+projectRoutes.delete("/:id", authValidate, projectControllers.deleteProject);
 
 export default projectRoutes;
