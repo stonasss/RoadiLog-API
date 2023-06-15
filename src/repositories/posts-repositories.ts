@@ -4,7 +4,7 @@ import { ValidPost } from "../utils/protocols.js";
 async function createPost({ title, description, link, userToken }: ValidPost) {
     return prisma.posts.create({
         data: {
-            user_id: userToken,
+            userId: userToken,
             title,
             description,
             link,

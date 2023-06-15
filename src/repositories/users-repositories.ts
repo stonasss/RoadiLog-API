@@ -48,12 +48,18 @@ async function findSessionByToken(token: string) {
     })
 }
 
-async function createSession(id: number, token: string) {
-    return prisma.sessions.create({
-        data: {
-            user_id: id,
-            token,
+async function createSession(token: string, userId: number) {
+    return prisma.sessions.upsert({
+        where: {
+            id: userId,
         },
+        create: {
+            userId,
+            token
+        },
+        update: {
+            token
+        }
     });
 };
 

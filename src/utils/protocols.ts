@@ -14,7 +14,7 @@ export type ApplicationError = {
 
 export type VerifyId = { id: number };
 export type RegisterUser = Omit<User, "token" | "id">;
-export type LoginUser = Omit<User, "token" | "id" | "name">;
+export type LoginUser = Omit<User, "token" | "id" | "name" | "image">;
 
 export type Post = {
     id: number,
