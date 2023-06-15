@@ -10,6 +10,8 @@ async function createPost({ title, description, link, userId }) {
 async function deletePost(id: string) {
     const postId = parseInt(id)
     const post = await postRepositories.deletePost(postId);
+
+    if (!post) throw errors.notFoundError();
     return post;
 };
 
@@ -22,6 +24,8 @@ async function updatePost({ title, description, link, id }) {
 async function getPostById(id: string) {
     const postId = parseInt(id)
     const post = await postRepositories.getPostById(postId);
+
+    if (!post) throw errors.notFoundError();
     return post;
 }
 

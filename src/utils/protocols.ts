@@ -52,3 +52,14 @@ export type EditProject = {
 
 export type NewProject = Omit<Project, "id" | "userId">
 export type ValidProject = Omit<Project, "id">
+
+export type Merch = {
+    id: number,
+    userId: number,
+    image: string,
+    title: string,
+    price: number,
+};
+
+export type NewMerch = Omit<Merch, "id" | "userId">
+export type ValidMerch = Omit<Merch, "id">
