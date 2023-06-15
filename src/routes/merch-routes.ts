@@ -6,5 +6,7 @@ const merchRoutes = Router();
 
 merchRoutes.get("/", merchControllers.getMerch);
 merchRoutes.post("/new", authValidate, merchControllers.newMerch);
+merchRoutes.put("/:id", authValidate, merchControllers.updateMerch);
+merchRoutes.delete("/:id", authValidate, merchControllers.deleteMerch);
 
 export default merchRoutes;

@@ -61,5 +61,12 @@ export type Merch = {
     price: number,
 };
 
+export type EditMerch = {
+    merchId: number,
+    image: string,
+    title: string,
+    price: number,
+};
+
 export type NewMerch = Omit<Merch, "id" | "userId">
 export type ValidMerch = Omit<Merch, "id">
