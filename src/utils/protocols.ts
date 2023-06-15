@@ -21,7 +21,8 @@ export type Post = {
     title: string,
     description: string,
     link: string,
-    userOnline: number,
+    userToken: number,
 };
 
-export type NewPost = Omit<Post, "id">;
+export type NewPost = Omit<Post, "id" | "userToken">;
+export type ValidPost = Omit<Post, "id">

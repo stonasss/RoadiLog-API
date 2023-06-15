@@ -32,21 +32,21 @@ async function findById(id: number) {
     });
 };
 
-async function findByToken(token: string) {
+async function findSessionById(userId: number) {
     return prisma.sessions.findFirst({
         where: {
-            token,
-        }
-    })
-}
-
-async function findSession(id: number) {
-    return prisma.sessions.findFirst({
-        where: {
-            id,
+            id: userId,
         },
     });
 };
+
+async function findSessionByToken(token: string) {
+    return prisma.sessions.findFirst({
+        where: {
+            token: token,
+        }
+    })
+}
 
 async function createSession(id: number, token: string) {
     return prisma.sessions.create({
@@ -69,8 +69,8 @@ export const userRepositories = {
     createUser,
     getUsers,
     findByEmail,
-    findByToken,
-    findSession,
+    findSessionById,
+    findSessionByToken,
     createSession,
     findById,
     deleteUser,
