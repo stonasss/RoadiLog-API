@@ -1,5 +1,5 @@
 import prisma from "../config/database.js";
-import { ValidPost } from "../utils/protocols.js";
+import { EditPost, ValidPost } from "../utils/protocols.js";
 
 async function createPost({ title, description, link, userId }: ValidPost) {
     return prisma.posts.create({
@@ -20,21 +20,35 @@ async function getPostById(postId: number) {
     return prisma.posts.findFirst({
         where: {
             id: postId,
-        }
-    })
-}
+        },
+    });
+};
 
 async function deletePost(postId: number) {
     return prisma.posts.delete({
         where: {
             id: postId,
-        }
-    })
-}
+        },
+    });
+};
+
+async function updatePost({ title, description, link, postId }: EditPost) {
+    return prisma.posts.update({
+        where: {
+            id: postId,
+        },
+        data: {
+            title,
+            description,
+            link,
+        },
+    });
+};
 
 export const postRepositories = {
     createPost,
     getPosts,
     getPostById,
     deletePost,
+    updatePost,
 }

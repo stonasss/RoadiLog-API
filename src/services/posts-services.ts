@@ -13,6 +13,12 @@ async function deletePost(id: string) {
     return post;
 };
 
+async function updatePost({ title, description, link, id }) {
+    const postId = parseInt(id)
+    const post = await postRepositories.updatePost({ title, description, link, postId });
+    return post;
+}
+
 async function getPostById(id: string) {
     const postId = parseInt(id)
     const post = await postRepositories.getPostById(postId);
@@ -29,4 +35,5 @@ export const postServices = {
     getPosts,
     getPostById,
     deletePost,
+    updatePost,
 };

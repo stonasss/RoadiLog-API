@@ -45,6 +45,8 @@ model posts {
   title       String  @db.VarChar
   description String
   link        String? @db.VarChar
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   users       users   @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "posts_fk0")
 }
 
