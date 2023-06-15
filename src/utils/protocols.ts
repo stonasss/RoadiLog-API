@@ -29,8 +29,19 @@ export type EditPost = {
     title: string,
     description: string,
     link: string,
-}
+};
 
 export type CheckId = { id: string, };
 export type NewPost = Omit<Post, "id" | "userId">;
 export type ValidPost = Omit<Post, "id">
+
+export type Project = {
+    id: number,
+    name: string,
+    instruments: string,
+    description: string,
+    userId: number,
+};
+
+export type NewProject = Omit<Project, "id" | "userId">
+export type ValidProject = Omit<Project, "id">
