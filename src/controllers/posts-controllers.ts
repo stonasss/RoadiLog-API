@@ -31,6 +31,9 @@ async function deletePost(req: Request, res: Response) {
     const { id } = req.params as CheckId;
 
     try {
+        const postExists = await postServices.getPostById(id);
+        if (!postExists) return res.status(httpStatus.BAD_REQUEST).send("Post does not exist");
+
         await postServices.deletePost(id);
         return res.status(httpStatus.OK).send("Post deleted")
     } catch (err) {

@@ -16,6 +16,14 @@ async function getPosts() {
     return prisma.posts.findMany();
 };
 
+async function getPostById(postId: number) {
+    return prisma.posts.findFirst({
+        where: {
+            id: postId,
+        }
+    })
+}
+
 async function deletePost(postId: number) {
     return prisma.posts.delete({
         where: {
@@ -27,5 +35,6 @@ async function deletePost(postId: number) {
 export const postRepositories = {
     createPost,
     getPosts,
+    getPostById,
     deletePost,
 }

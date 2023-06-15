@@ -1,3 +1,4 @@
+import httpStatus from "http-status";
 import { errors } from "../errors/index.js";
 import { postRepositories } from "../repositories/posts-repositories.js";
 
@@ -9,7 +10,13 @@ async function createPost({ title, description, link, userId }) {
 async function deletePost(id: string) {
     const postId = parseInt(id)
     const post = await postRepositories.deletePost(postId);
-    if (!post) throw errors.notFoundError();
+    return post;
+};
+
+async function getPostById(id: string) {
+    const postId = parseInt(id)
+    const post = await postRepositories.getPostById(postId);
+    return post;
 }
 
 async function getPosts() {
@@ -20,5 +27,6 @@ async function getPosts() {
 export const postServices = {
     createPost,
     getPosts,
+    getPostById,
     deletePost,
 };
