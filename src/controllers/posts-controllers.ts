@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { errorHandler } from '../middlewares/error-handler-middlware.js';
-import { ApplicationError, NewPost } from '../utils/protocols.js';
+import { ApplicationError, CheckId, NewPost } from '../utils/protocols.js';
 import { postSchema } from '../schemas/posts-schema.js';
 import { postServices } from '../services/posts-services.js';
 import { userServices } from '../services/users-services.js';
@@ -19,8 +19,27 @@ async function newPost(req: Request, res: Response) {
         const userId = await userServices.retrieveSession(userToken)
         if (!userId) return res.status(httpStatus.UNAUTHORIZED);
 
-        await postServices.createPost({ title, description, link, userId });
-        res.status(httpStatus.CREATED).send({});
+        const result = await postServices.createPost({ title, description, link, userId });
+        res.status(httpStatus.CREATED).send({ result });
+    } catch (err) {
+        const error = err as ApplicationError | Error;
+        errorHandler(error, req, res);
+    };
+};
+
+async function deletePost(req: Request, res: Response) {
+    const { id } = req.params as CheckId;
+    const userToken = res.locals.user;
+
+    try {
+        const postExists = await postServices.getPostById(id);
+        if (!postExists) return res.status(httpStatus.BAD_REQUEST).send("Post does not exist");
+
+        const userId = await userServices.retrieveSession(userToken)
+        if (postExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+
+        await postServices.deletePost(id);
+        return res.status(httpStatus.OK).send("Post deleted")
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
@@ -40,4 +59,5 @@ async function getPosts(req: Request, res: Response) {
 export const postControllers = {
     newPost,
     getPosts,
+    deletePost,
 }
