@@ -24,5 +24,7 @@ export type Post = {
     userId: number,
 };
 
+export type CheckId = { id: string, };
+
 export type NewPost = Omit<Post, "id" | "userId">;
 export type ValidPost = Omit<Post, "id">

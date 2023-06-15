@@ -2,15 +2,23 @@ import { errors } from "../errors/index.js";
 import { postRepositories } from "../repositories/posts-repositories.js";
 
 async function createPost({ title, description, link, userId }) {
-    await postRepositories.createPost({ title, description, link, userId });
+    const post = await postRepositories.createPost({ title, description, link, userId });
+    return post;
+};
+
+async function deletePost(id: string) {
+    const postId = parseInt(id)
+    const post = await postRepositories.deletePost(postId);
+    if (!post) throw errors.notFoundError();
 }
 
 async function getPosts() {
     const result = await postRepositories.getPosts();
     return result;
-}
+};
 
 export const postServices = {
     createPost,
     getPosts,
-}
+    deletePost,
+};
