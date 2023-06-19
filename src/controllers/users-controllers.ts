@@ -9,6 +9,7 @@ import {
     VerifyId 
 } from "../utils/protocols.js";
 import { errorHandler } from "../middlewares/error-handler-middlware.js";
+import { userRepositories } from "../repositories/users-repositories.js";
 
 async function register(req: Request, res: Response) {
     const user = req.body as RegisterUser;
@@ -35,7 +36,10 @@ async function login(req: Request, res: Response) {
 
     try {
         const token = await userServices.loginUser({ email, password });
-        return res.status(httpStatus.OK).send({ token });
+        if (token) {
+            const image = await userRepositories.findByEmail( email )
+            return res.status(httpStatus.OK).send({ token, image });
+        }
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
