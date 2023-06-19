@@ -36,7 +36,7 @@ async function deleteMerch(req: Request, res: Response) {
         if (!merchExists) return res.status(httpStatus.BAD_REQUEST).send("Merch does not exist");
 
         const userId = await userServices.retrieveSession(userToken);
-        if (merchExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
+        if (merchExists.userId !== userId.userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         await merchServices.deleteMerch(id);
         return res.status(httpStatus.OK).send("Merch deleted");
@@ -61,7 +61,7 @@ async function updateMerch(req: Request, res: Response) {
         if (!merchExists) return res.status(httpStatus.BAD_REQUEST).send("Merch does not exist");
 
         const userId = await userServices.retrieveSession(userToken)
-        if (merchExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
+        if (merchExists.userId !== userId.userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         const result = await merchServices.updateMerch({ image, title, price, id });
         return res.status(httpStatus.OK).send({ result });

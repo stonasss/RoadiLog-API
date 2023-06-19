@@ -36,7 +36,7 @@ async function deleteProject(req: Request, res: Response) {
         if (!projectExists) return res.status(httpStatus.BAD_REQUEST).send("Project does not exist");
 
         const userId = await userServices.retrieveSession(userToken);
-        if (projectExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
+        if (projectExists.userId !== userId.userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         await projectServices.deleteProject(id);
         return res.status(httpStatus.OK).send("Project deleted")
@@ -61,7 +61,7 @@ async function updateProject(req: Request, res: Response) {
         if (!projectExists) return res.status(httpStatus.BAD_REQUEST).send("Project does not exist");
 
         const userId = await userServices.retrieveSession(userToken)
-        if (projectExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
+        if (projectExists.userId !== userId.userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         const result = await projectServices.updateProject({ name, instruments, description, id });
         return res.status(httpStatus.OK).send({ result });

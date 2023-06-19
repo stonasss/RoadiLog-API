@@ -24,10 +24,9 @@ async function loginUser({ email, password }) {
     const validPassword = await bcrypt.compare(password, userExists.password);
     if (!validPassword) throw errors.invalidCredentialsError();
 
-    const userId = Number(userExists.id)
-    const token = jwt.sign({ id: userId }, process.env.SECRET_KEY);
+    const token = jwt.sign({ id: userExists.id }, process.env.SECRET_KEY);
 
-    await userRepositories.createSession(token, userId)
+    await userRepositories.createSession(token, userExists.id)
     return token
 }
 
@@ -40,7 +39,15 @@ async function retrieveUsers() {
 async function retrieveSession(userToken: string) {
     const result = await userRepositories.findSessionByToken(userToken);
     if (!result) throw errors.notFoundError();
-    return result.id;
+    return result;
+}
+
+async function retrieveUserById(id: string) {
+    const userId = parseInt(id)
+
+    const result = await userRepositories.findById(userId)
+    if (!result) throw errors.notFoundError();
+    return result;
 }
 
 async function deleteUser(id: number) {
@@ -54,6 +61,7 @@ export const userServices = {
     createUser,
     loginUser,
     retrieveUsers,
+    retrieveUserById,
     retrieveSession,
     deleteUser,
 }

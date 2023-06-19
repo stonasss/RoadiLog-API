@@ -20,7 +20,7 @@ async function updatePost({ title, description, link, id }) {
     const postId = parseInt(id)
     const post = await postRepositories.updatePost({ title, description, link, postId });
     return post;
-}
+};
 
 async function getPostById(id: string) {
     const postId = parseInt(id)
@@ -28,7 +28,13 @@ async function getPostById(id: string) {
 
     if (!post) throw errors.notFoundError();
     return post;
-}
+};
+
+async function getPostsByUserId(id: string) {
+    const userId = parseInt(id);
+    const userPosts = await postRepositories.getPostsByUser(userId);
+    return userPosts;
+};
 
 async function getPosts() {
     const result = await postRepositories.getPosts();
@@ -39,6 +45,7 @@ export const postServices = {
     createPost,
     getPosts,
     getPostById,
+    getPostsByUserId,
     deletePost,
     updatePost,
 };

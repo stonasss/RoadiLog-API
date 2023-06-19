@@ -45,10 +45,19 @@ async function updatePost({ title, description, link, postId }: EditPost) {
     });
 };
 
+async function getPostsByUser(userId: number) {
+    return prisma.posts.findMany({
+        where: {
+            userId,
+        },
+    });
+};
+
 export const postRepositories = {
     createPost,
     getPosts,
     getPostById,
+    getPostsByUser,
     deletePost,
     updatePost,
 }
