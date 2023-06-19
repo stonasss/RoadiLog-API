@@ -87,9 +87,9 @@ async function getPostsByUserId(req: Request, res: Response) {
     const userToken = res.locals.user;
 
     try {
-        const token = await userServices.retrieveSession(userToken);
+        const sessionId = await userServices.retrieveSession(userToken);
         const userId = await userServices.retrieveUserById(id)
-        if (userId.id !== token) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+        if (userId.id !== sessionId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
 
         const userPosts = await postServices.getPostsByUserId(id);
         return res.status(httpStatus.OK).send({ userPosts });

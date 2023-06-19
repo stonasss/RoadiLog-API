@@ -81,9 +81,27 @@ async function getProjects(req: Request, res: Response) {
     };
 };
 
+async function getProjectsByUserId(req: Request, res: Response) {
+    const { id } = req.params as CheckId;
+    const userToken = res.locals.user;
+
+    try {
+        const sessionId = await userServices.retrieveSession(userToken);
+        const userId = await userServices.retrieveUserById(id)
+        if (userId.id !== sessionId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+
+        const userProjects = await projectServices.getProjectsByUserId(id);
+        return res.status(httpStatus.OK).send({ userProjects });
+    } catch (err) {
+        const error = err as ApplicationError | Error;
+        errorHandler(error, req, res);
+    }
+}
+
 export const projectControllers = {
     newProject,
     deleteProject,
     updateProject,
     getProjects,
+    getProjectsByUserId
 };

@@ -46,10 +46,19 @@ async function getProjectById(projectId: number) {
     });
 };
 
+async function getProjectsByUser(userId: number) {
+    return prisma.projects.findMany({
+        where: {
+            userId,
+        },
+    });
+};
+
 export const projectRepositories = {
     createProject,
     deleteProject,
     getProjects,
     getProjectById,
+    getProjectsByUser,
     updateProject,
 };

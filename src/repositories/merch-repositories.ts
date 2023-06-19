@@ -45,10 +45,19 @@ async function getMerchById(merchId: number) {
     });
 };
 
+async function getMerchByUser(userId: number) {
+    return prisma.merch.findMany({
+        where: {
+            userId,
+        },
+    });
+};
+
 export const merchRepositories = {
     createMerch,
     getMerch,
     getMerchById,
+    getMerchByUser,
     updateMerch,
     deleteMerch,
 };

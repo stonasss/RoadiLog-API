@@ -29,16 +29,23 @@ async function getMerch() {
     return result;
 };
 
+async function getMerchByUserId(id: string) {
+    const userId = parseInt(id);
+    const userMerch = await merchRepositories.getMerchByUser(userId);
+    return userMerch;
+}
+
 async function updateMerch({ image, title, price, id }) {
     const merchId = parseInt(id)
     const merch = await merchRepositories.updateMerch({ image, title, price, merchId });
     return merch;
-}
+};
 
 export const merchServices = {
     createMerch,
     getMerch,
     getMerchById,
+    getMerchByUserId,
     updateMerch,
     deleteMerch,
-}
+};

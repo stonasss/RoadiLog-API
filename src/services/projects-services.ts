@@ -27,7 +27,13 @@ async function getProjectById(id: string) {
 async function getProjects() {
     const result = await projectRepositories.getProjects();
     return result;
-}
+};
+
+async function getProjectsByUserId(id: string) {
+    const userId = parseInt(id);
+    const userProjects = await projectRepositories.getProjectsByUser(userId);
+    return userProjects;
+};
 
 async function updateProject({ name, instruments, description, id }) {
     const projectId = parseInt(id)
@@ -39,6 +45,7 @@ export const projectServices = {
     createProject,
     deleteProject,
     getProjectById,
+    getProjectsByUserId,
     updateProject,
     getProjects,
 };

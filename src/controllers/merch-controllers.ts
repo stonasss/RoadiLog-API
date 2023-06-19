@@ -81,9 +81,27 @@ async function getMerch(req: Request, res: Response) {
     };
 };
 
+async function getMerchByUserId(req: Request, res: Response) {
+    const { id } = req.params as CheckId;
+    const userToken = res.locals.user;
+
+    try {
+        const sessionId = await userServices.retrieveSession(userToken);
+        const userId = await userServices.retrieveUserById(id)
+        if (userId.id !== sessionId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+
+        const userMerch = await merchServices.getMerchByUserId(id);
+        return res.status(httpStatus.OK).send({ userMerch });
+    } catch (err) {
+        const error = err as ApplicationError | Error;
+        errorHandler(error, req, res);
+    }
+}
+
 export const merchControllers = {
     newMerch,
     getMerch,
+    getMerchByUserId,
     updateMerch,
     deleteMerch,
 }
