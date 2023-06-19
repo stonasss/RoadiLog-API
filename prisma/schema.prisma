@@ -9,7 +9,7 @@ datasource db {
 
 model sessions {
   id      Int    @id(map: "sessions_pk") @default(autoincrement())
-  userId Int
+  userId Int     @unique
   token   String @unique @db.VarChar
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
