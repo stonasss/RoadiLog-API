@@ -1,7 +1,7 @@
 import express from "express";
 import cors from 'cors';
 import dotenv from 'dotenv';
-import router from "./routes/index.js";
+import router from "./routes/index";
 
 dotenv.config();
 
@@ -16,3 +16,5 @@ app
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
+
+export default app

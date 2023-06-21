@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { userRepositories } from "../repositories/users-repositories.js"
+import { userRepositories } from "../repositories/users-repositories"
 import httpStatus from "http-status";
 
 export async function authValidate(req: Request, res: Response, next: NextFunction) {

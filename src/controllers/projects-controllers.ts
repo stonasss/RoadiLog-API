@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { errorHandler } from "../middlewares/error-handler-middlware.js";
-import { ApplicationError, CheckId, NewProject } from "../utils/protocols.js";
-import { projectSchema } from "../schemas/projects-schema.js";
-import { userServices } from "../services/users-services.js";
-import { projectServices } from "../services/projects-services.js";
+import { errorHandler } from "../middlewares/error-handler-middlware";
+import { ApplicationError, CheckId, NewProject } from "../utils/protocols";
+import { projectSchema } from "../schemas/projects-schema";
+import { userServices } from "../services/users-services";
+import { projectServices } from "../services/projects-services";
 
 async function newProject(req: Request, res: Response) {
     const project = req.body as NewProject;

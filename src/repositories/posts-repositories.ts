@@ -1,5 +1,5 @@
-import prisma from "../config/database.js";
-import { EditPost, ValidPost } from "../utils/protocols.js";
+import prisma from "../config/database";
+import { EditPost, ValidPost } from "../utils/protocols";
 
 async function createPost({ title, description, link, userId }: ValidPost) {
     return prisma.posts.create({

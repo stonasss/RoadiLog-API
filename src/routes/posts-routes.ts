@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { postControllers } from '../controllers/posts-controllers.js';
-import { authValidate } from '../middlewares/auth-validation.js';
+import { postControllers } from '../controllers/posts-controllers';
+import { authValidate } from '../middlewares/auth-validation';
 
 const postRoutes = Router();
 

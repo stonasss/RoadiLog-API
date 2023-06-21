@@ -1,5 +1,5 @@
-import prisma from "../config/database.js";
-import { EditProject, ValidProject } from "../utils/protocols.js";
+import prisma from "../config/database";
+import { EditProject, ValidProject } from "../utils/protocols";
 
 
 async function createProject({ name, instruments, description, userId }: ValidProject) {

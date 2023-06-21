@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import { loginSchema, registerSchema } from "../schemas/users-schema.js";
-import { userServices } from "../services/users-services.js";
+import { loginSchema, registerSchema } from "../schemas/users-schema";
+import { userServices } from "../services/users-services";
 import httpStatus from 'http-status';
 import { 
     ApplicationError, 
     LoginUser, 
     RegisterUser, 
     VerifyId 
-} from "../utils/protocols.js";
-import { errorHandler } from "../middlewares/error-handler-middlware.js";
-import { userRepositories } from "../repositories/users-repositories.js";
+} from "../utils/protocols";
+import { errorHandler } from "../middlewares/error-handler-middlware";
+import { userRepositories } from "../repositories/users-repositories";
 
 async function register(req: Request, res: Response) {
     const user = req.body as RegisterUser;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { projectControllers } from '../controllers/projects-controllers.js';
-import { authValidate } from '../middlewares/auth-validation.js';
+import { projectControllers } from '../controllers/projects-controllers';
+import { authValidate } from '../middlewares/auth-validation';
 
 const projectRoutes = Router();
 

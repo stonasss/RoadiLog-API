@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { authValidate } from '../middlewares/auth-validation.js';
-import { merchControllers } from '../controllers/merch-controllers.js';
+import { authValidate } from '../middlewares/auth-validation';
+import { merchControllers } from '../controllers/merch-controllers';
 
 const merchRoutes = Router();
 
