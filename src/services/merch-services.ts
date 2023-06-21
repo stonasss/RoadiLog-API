@@ -1,7 +1,8 @@
+import { ValidMerch } from '@/utils/protocols';
 import { errors } from '../errors/index';
 import { merchRepositories } from '../repositories/merch-repositories';
 
-async function createMerch({ image, title, price, userId }: any) {
+async function createMerch({ image, title, price, userId }: ValidMerch) {
     const merch = await merchRepositories.createMerch({ image, title, price, userId });
     return merch;
 };

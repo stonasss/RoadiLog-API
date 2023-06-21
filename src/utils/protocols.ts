@@ -1,10 +1,8 @@
 export type User = {
-    id: number,
     name: string,
     email: string,
     password: string,
     image: string,
-    token: string,
 };
 
 export type ApplicationError = {
@@ -31,6 +29,13 @@ export type EditPost = {
     link: string,
 };
 
+export type PostToUpdate = {
+    id: string,
+    title: string,
+    description: string,
+    link: string,
+};
+
 export type CheckId = { id: string, };
 export type NewPost = Omit<Post, "id" | "userId">;
 export type ValidPost = Omit<Post, "id">
@@ -45,6 +50,13 @@ export type Project = {
 
 export type EditProject = {
     projectId: number,
+    name: string,
+    instruments: string,
+    description: string,
+};
+
+export type ProjectToUpdate = {
+    id: string,
     name: string,
     instruments: string,
     description: string,

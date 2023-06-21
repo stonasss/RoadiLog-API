@@ -2,9 +2,9 @@ import bcrypt from 'bcrypt';
 import { errors } from '../errors/index';
 import { userRepositories } from '../repositories/users-repositories';
 import jwt from 'jsonwebtoken';
-import { create } from 'domain';
+import { LoginUser, User } from '@/utils/protocols';
 
-async function createUser({ name, email, password, image }: any) {
+async function createUser({ name, email, password, image }: User) {
     const userExists = await userRepositories.findByEmail(email);
 
     if (userExists) throw errors.duplicatedEmail();
@@ -18,7 +18,7 @@ async function createUser({ name, email, password, image }: any) {
     });
 };
 
-async function loginUser({ email, password }: any) {
+async function loginUser({ email, password }: LoginUser) {
     const userExists = await userRepositories.findByEmail(email);
     if (!userExists) throw errors.invalidCredentialsError();
 
