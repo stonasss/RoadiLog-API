@@ -2,12 +2,9 @@ import supertest from "supertest";
 import httpStatus from "http-status";
 import { faker } from '@faker-js/faker';
 import { cleanDb } from "../helpers";
-import { createSession } from "../factories/sessions-factory";
 import { createUser } from "../factories/users-factory";
 import prisma from "config/database";
 import app from "app";
-import { date } from "joi";
-import { timeStamp } from "console";
 
 beforeAll(async () => {
     await cleanDb();
@@ -162,7 +159,7 @@ describe('POST /login', () => {
             expect(response.status).toBe(httpStatus.UNAUTHORIZED)
         })
 
-        it('should respond with status 200 and correct body', async () => {
+        it('should respond with status 200 and correct body with token', async () => {
             const body = generateValidBody();
             await server.post('/register').send(body);
 
