@@ -36,7 +36,7 @@ describe('POST /register', () => {
         })
 
         const generateValidBody = () => ({
-            name: faker.name.firstName(),
+            name: faker.internet.userName(),
             email: faker.internet.email(),
             image: faker.image.imageUrl(),
             password: faker.internet.password(6),
@@ -48,6 +48,22 @@ describe('POST /register', () => {
             const response = await server.post('/register').send(body);
 
             expect(response.status).toBe(httpStatus.CONFLICT);
+        });
+
+        it(`should respond with status 201 if image isn't submitted`, async () => {
+            const body = {
+                name: faker.internet.userName(),
+                email: faker.internet.email(),
+                password: faker.internet.password(6),
+            }
+
+            const response = await server.post('/register').send(body);
+
+            expect(response.status).toBe(httpStatus.CREATED);
+            expect(response.body).toEqual({
+                name: body.name,
+                email: body.email
+            })
         });
 
         it('should respond with status 201 and create user when email is unique', async () => {
@@ -114,7 +130,7 @@ describe('POST /login', () => {
         })
 
         const generateValidBody = () => ({
-            name: faker.name.firstName(),
+            name: faker.internet.userName(),
             email: faker.internet.email(),
             image: faker.image.imageUrl(),
             password: faker.internet.password(6),
