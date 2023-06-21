@@ -20,7 +20,7 @@ async function register(req: Request, res: Response) {
 
     try {
         await userServices.createUser({ name, email, password, image });
-        res.status(httpStatus.CREATED).send({});
+        res.status(httpStatus.CREATED).send({ name, email, image });
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);

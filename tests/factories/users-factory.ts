@@ -11,6 +11,7 @@ export async function createUser(params: Partial<users> = {}): Promise<users> {
         data: {
             name: params.name || faker.name.firstName(),
             email: params.email || faker.internet.email(),
+            image: params.image || faker.image.imageUrl(),
             password: hashedPassword,
         },
     });
