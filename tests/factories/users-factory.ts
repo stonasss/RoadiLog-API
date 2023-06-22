@@ -16,3 +16,12 @@ export async function createUser(params: Partial<users> = {}): Promise<users> {
         },
     });
 }
+
+export async function loginUser(token: string, userId: number) {
+    return await prisma.sessions.create({
+        data: {
+            token,
+            userId
+        }
+    })
+}

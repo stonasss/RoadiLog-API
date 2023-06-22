@@ -1,8 +1,9 @@
 import supertest from "supertest";
 import httpStatus from "http-status";
+import * as jwt from 'jsonwebtoken';
 import { faker } from '@faker-js/faker';
 import { cleanDb } from "../helpers";
-import { createUser } from "../factories/users-factory";
+import { createUser, loginUser } from "../factories/users-factory";
 import prisma from "config/database";
 import app from "app";
 
@@ -11,6 +12,36 @@ beforeAll(async () => {
 });
 
 const server = supertest(app);
+
+describe('GET /users', () => {
+    const generateValidBody = () => ({
+        name: faker.internet.userName(),
+        email: faker.internet.email(),
+        image: faker.image.imageUrl(),
+        password: faker.internet.password(6),
+    });
+
+    it('should respond with status 200 and correct body if no users registered', async () => {
+        await prisma.users.deleteMany();
+        const response = await server.get('/users')
+
+        expect(response.status).toBe(httpStatus.OK)
+        expect(response.body).toEqual({
+            users: []
+        })
+    })
+
+    it('should respond with status 200 and correct body if users registered', async () => {
+        const body = generateValidBody();
+        await server.post('/register').send(body)
+        const response = await server.get('/users')
+
+        expect(response.status).toBe(httpStatus.OK)
+        expect(response.body).not.toEqual({
+            users: []
+        })
+    })
+});
 
 describe('POST /register', () => {
     it('should respond with status 400 when body is not given', async () => {
@@ -183,5 +214,42 @@ describe('POST /login', () => {
                 }
             })
         })
+    })
+})
+
+describe('DELETE /users', () => {
+    const generateValidBody = () => ({
+        name: faker.internet.userName(),
+        email: faker.internet.email(),
+        image: faker.image.imageUrl(),
+        password: faker.internet.password(6),
+    });
+
+    it('should respond with status 404 and correct body if id does not exist', async () => {
+        const id = {
+            id: 99999
+        }
+
+        const response = await server.delete('/users').send(id)
+        expect(response.status).toBe(httpStatus.NOT_FOUND)
+        expect(response.body).toEqual({})
+    })
+
+    it('should respond with status 204 if deletion successful', async () => {
+        const body = generateValidBody();
+        await server.post('/register').send(body);
+
+        const user = await prisma.users.findUnique({
+            where: {
+                email: body.email
+            },
+        });
+
+        const token = jwt.sign({ userId: user.id }, process.env.SECRET_KEY);
+
+        await loginUser(token, user.id)
+
+        const response = await server.delete(`/users/${user.id}`).set('Authorization', `Bearer ${token}`)
+        expect(response.status).toBe(httpStatus.NO_CONTENT)
     })
 })

@@ -25,10 +25,11 @@ async function loginUser({ email, password }: LoginUser) {
     const validPassword = await bcrypt.compare(password, userExists.password);
     if (!validPassword) throw errors.invalidCredentialsError();
 
+    const userId = Number(userExists.id)
     const token = jwt.sign({ id: userExists.id }, process.env.SECRET_KEY);
 
-    await userRepositories.createSession(token, userExists.id)
-    return token
+    const userInfo = await userRepositories.createSession(token, userId)
+    return userInfo;
 }
 
 async function retrieveUsers() {
@@ -43,6 +44,12 @@ async function retrieveSession(userToken: string) {
     return result.id;
 }
 
+async function retrieveSessionToDelete(userToken: string) {
+    const result = await userRepositories.findSessionByToken(userToken);
+    if (!result) throw errors.notFoundError();
+    return result;
+}
+
 async function retrieveUserById(id: string) {
     const userId = parseInt(id)
 
@@ -51,11 +58,24 @@ async function retrieveUserById(id: string) {
     return result;
 }
 
-async function deleteUser(id: number) {
-    const result = await userRepositories.findById(id);
-    if (!result) throw errors.notFoundError();
-    const deleted = await userRepositories.deleteUser(id);
-    return deleted;
+async function deleteUser(id: string) {
+    const userId = parseInt(id)
+
+    const user = await userRepositories.getUserById(userId);
+    if (!user) throw errors.notFoundError();
+
+    const result = await userRepositories.deleteUser(userId);
+    return result;
+}
+
+async function deleteSession(id: string) {
+    const userId = parseInt(id)
+
+    const user = await userRepositories.getUserById(userId);
+    if (!user) throw errors.notFoundError();
+
+    const result = await userRepositories.deleteSession(userId);
+    return result;
 }
 
 export const userServices = {
@@ -64,5 +84,7 @@ export const userServices = {
     retrieveUsers,
     retrieveUserById,
     retrieveSession,
+    retrieveSessionToDelete,
     deleteUser,
+    deleteSession
 }

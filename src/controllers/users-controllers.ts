@@ -4,12 +4,13 @@ import { userServices } from "../services/users-services";
 import httpStatus from 'http-status';
 import { 
     ApplicationError, 
+    CheckId, 
     LoginUser, 
     RegisterUser, 
-    VerifyId 
 } from "../utils/protocols";
 import { errorHandler } from "../middlewares/error-handler-middlware";
 import { userRepositories } from "../repositories/users-repositories";
+import prisma from "../config/database";
 
 async function register(req: Request, res: Response) {
     const user = req.body as RegisterUser;
@@ -57,10 +58,18 @@ async function getUsers(req: Request, res: Response) {
 }
 
 async function deleteUser(req: Request, res: Response) {
-    const { id } = req.body as VerifyId;
+    const { id } = req.params as CheckId;
+    const userToken = res.locals.user;
 
     try {
-        await userServices.deleteUser(id);
+        const user = await userServices.retrieveUserById(id)
+        if (!user) return res.status(httpStatus.BAD_REQUEST).send("User not found")
+
+        const userId = await userServices.retrieveSessionToDelete(userToken)
+        if (user.id !== userId.userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+
+        await userServices.deleteSession(id)
+        await userServices.deleteUser(id)
         return res.status(httpStatus.NO_CONTENT).send({})
     } catch (err) {
         const error = err as ApplicationError | Error;
