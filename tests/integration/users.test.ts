@@ -14,6 +14,10 @@ beforeAll(async () => {
 const server = supertest(app);
 
 describe('GET /users', () => {
+    beforeAll(async () => {
+        await cleanDb();
+    })
+
     const generateValidBody = () => ({
         name: faker.internet.userName(),
         email: faker.internet.email(),
@@ -22,6 +26,7 @@ describe('GET /users', () => {
     });
 
     it('should respond with status 200 and correct body if no users registered', async () => {
+        await prisma.sessions.deleteMany();
         await prisma.users.deleteMany();
         const response = await server.get('/users')
 
@@ -44,6 +49,10 @@ describe('GET /users', () => {
 });
 
 describe('POST /register', () => {
+    beforeAll(async () => {
+        await cleanDb();
+    });
+
     it('should respond with status 400 when body is not given', async () => {
         const response = await server.post('/register')
 
@@ -137,6 +146,10 @@ describe('POST /register', () => {
 });
 
 describe('POST /login', () => {
+    beforeAll(async () => {
+        await cleanDb();
+    });
+
     it('should respond with status 400 when body is not given', async () => {
         const response = await server.post('/login');
 
@@ -202,7 +215,13 @@ describe('POST /login', () => {
             const response = await server.post('/login').send(login)
             expect(response.status).toBe(httpStatus.OK)
             expect(response.body).toEqual({
-                token: expect.any(String),
+                token: {
+                    id: expect.any(Number),
+                    userId: expect.any(Number),
+                    token: response.body.token.token,
+                    createdAt: response.body.token.createdAt,
+                    updatedAt: response.body.token.updatedAt
+                },
                 image: {
                     id: expect.any(Number),
                     name: body.name,
@@ -218,6 +237,10 @@ describe('POST /login', () => {
 })
 
 describe('DELETE /users', () => {
+    beforeAll(async () => {
+        await cleanDb();
+    });
+
     const generateValidBody = () => ({
         name: faker.internet.userName(),
         email: faker.internet.email(),
