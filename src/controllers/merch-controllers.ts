@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import httpStatus from "http-status";
-import { errorHandler } from "../middlewares/error-handler-middlware.js";
-import { ApplicationError, CheckId, NewMerch } from "../utils/protocols.js";
-import { merchSchema } from "../schemas/merch-schema.js";
-import { userServices } from "../services/users-services.js";
-import { merchServices } from "../services/merch-services.js";
+import { errorHandler } from "../middlewares/error-handler-middlware";
+import { ApplicationError, CheckId, NewMerch } from "../utils/protocols";
+import { merchSchema } from "../schemas/merch-schema";
+import { userServices } from "../services/users-services";
+import { merchServices } from "../services/merch-services";
 
 async function newMerch(req: Request, res: Response) {
     const merch = req.body as NewMerch

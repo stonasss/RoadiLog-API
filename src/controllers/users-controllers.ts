@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { loginSchema, registerSchema } from "../schemas/users-schema.js";
-import { userServices } from "../services/users-services.js";
+import { loginSchema, registerSchema } from "../schemas/users-schema";
+import { userServices } from "../services/users-services";
 import httpStatus from 'http-status';
 import { 
     ApplicationError, 
+    CheckId, 
     LoginUser, 
     RegisterUser, 
-    VerifyId 
-} from "../utils/protocols.js";
-import { errorHandler } from "../middlewares/error-handler-middlware.js";
-import { userRepositories } from "../repositories/users-repositories.js";
+} from "../utils/protocols";
+import { errorHandler } from "../middlewares/error-handler-middlware";
+import { userRepositories } from "../repositories/users-repositories";
+import prisma from "../config/database";
 
 async function register(req: Request, res: Response) {
     const user = req.body as RegisterUser;
@@ -20,7 +21,7 @@ async function register(req: Request, res: Response) {
 
     try {
         await userServices.createUser({ name, email, password, image });
-        res.status(httpStatus.CREATED).send({});
+        res.status(httpStatus.CREATED).send({ name, email, image });
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
@@ -57,10 +58,18 @@ async function getUsers(req: Request, res: Response) {
 }
 
 async function deleteUser(req: Request, res: Response) {
-    const { id } = req.body as VerifyId;
+    const { id } = req.params as CheckId;
+    const userToken = res.locals.user;
 
     try {
-        await userServices.deleteUser(id);
+        const user = await userServices.retrieveUserById(id)
+        if (!user) return res.status(httpStatus.BAD_REQUEST).send("User not found")
+
+        const userId = await userServices.retrieveSessionToDelete(userToken)
+        if (user.id !== userId.userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+
+        await userServices.deleteSession(id)
+        await userServices.deleteUser(id)
         return res.status(httpStatus.NO_CONTENT).send({})
     } catch (err) {
         const error = err as ApplicationError | Error;

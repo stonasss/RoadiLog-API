@@ -1,7 +1,8 @@
-import { errors } from "../errors/index.js";
-import { postRepositories } from "../repositories/posts-repositories.js";
+import { PostToUpdate, ValidPost } from "@/utils/protocols";
+import { errors } from "../errors/index";
+import { postRepositories } from "../repositories/posts-repositories";
 
-async function createPost({ title, description, link, userId }) {
+async function createPost({ title, description, link, userId }: ValidPost) {
     const post = await postRepositories.createPost({ title, description, link, userId });
     return post;
 };
@@ -16,7 +17,7 @@ async function deletePost(id: string) {
     return result;
 };
 
-async function updatePost({ title, description, link, id }) {
+async function updatePost({ title, description, link, id }: PostToUpdate) {
     const postId = parseInt(id)
     const post = await postRepositories.updatePost({ title, description, link, postId });
     return post;

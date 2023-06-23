@@ -1,7 +1,8 @@
-import { errors } from '../errors/index.js';
-import { projectRepositories } from '../repositories/projects-repositories.js'
+import { ProjectToUpdate } from '@/utils/protocols';
+import { errors } from '../errors/index';
+import { projectRepositories } from '../repositories/projects-repositories'
 
-async function createProject({ name, instruments, description, userId }) {
+async function createProject({ name, instruments, description, userId }: any) {
     const project = await projectRepositories.createProject({ name, instruments, description, userId });
     return project;
 };
@@ -35,7 +36,7 @@ async function getProjectsByUserId(id: string) {
     return userProjects;
 };
 
-async function updateProject({ name, instruments, description, id }) {
+async function updateProject({ name, instruments, description, id }: ProjectToUpdate) {
     const projectId = parseInt(id)
     const project = await projectRepositories.updateProject({ name, instruments, description, projectId });
     return project;

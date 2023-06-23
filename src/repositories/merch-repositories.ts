@@ -1,4 +1,4 @@
-import prisma from "../config/database.js";
+import prisma from "../config/database";
 import { ValidMerch, EditMerch } from "../utils/protocols";
 
 async function createMerch({ image, title, price, userId }: ValidMerch) {

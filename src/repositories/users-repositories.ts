@@ -1,5 +1,5 @@
-import prisma from '../config/database.js'
-import { RegisterUser } from '../utils/protocols.js'
+import prisma from '../config/database'
+import { RegisterUser } from '../utils/protocols'
 
 async function createUser({ name, email, password, image }: RegisterUser) {
     return prisma.users.create({
@@ -15,6 +15,14 @@ async function createUser({ name, email, password, image }: RegisterUser) {
 async function getUsers() {
     return prisma.users.findMany();
 };
+
+async function getUserById(userId: number) {
+    return prisma.users.findFirst({
+        where: {
+            id: userId,
+        }
+    })
+}
 
 async function findByEmail(email: string) {
     return prisma.users.findFirst({
@@ -49,9 +57,9 @@ async function findSessionByToken(userToken: string) {
 }
 
 async function createSession(token: string, userId: number) {
-    return prisma.sessions.upsert({
+    return await prisma.sessions.upsert({
         where: {
-            id: userId,
+            userId,
         },
         create: {
             userId,
@@ -59,7 +67,7 @@ async function createSession(token: string, userId: number) {
         },
         update: {
             token
-        }
+        },
     });
 };
 
@@ -71,13 +79,23 @@ async function deleteUser(id: number) {
     });
 };
 
+async function deleteSession(id: number) {
+    return prisma.sessions.delete({
+        where: {
+            userId: id,
+        }
+    })
+}
+
 export const userRepositories = {
     createUser,
     getUsers,
+    getUserById,
     findByEmail,
     findSessionById,
     findSessionByToken,
     createSession,
     findById,
     deleteUser,
+    deleteSession
 }

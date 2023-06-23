@@ -1,7 +1,8 @@
-import { errors } from '../errors/index.js';
-import { merchRepositories } from '../repositories/merch-repositories.js';
+import { ValidMerch } from '@/utils/protocols';
+import { errors } from '../errors/index';
+import { merchRepositories } from '../repositories/merch-repositories';
 
-async function createMerch({ image, title, price, userId }) {
+async function createMerch({ image, title, price, userId }: ValidMerch) {
     const merch = await merchRepositories.createMerch({ image, title, price, userId });
     return merch;
 };
@@ -35,7 +36,7 @@ async function getMerchByUserId(id: string) {
     return userMerch;
 }
 
-async function updateMerch({ image, title, price, id }) {
+async function updateMerch({ image, title, price, id }: any) {
     const merchId = parseInt(id)
     const merch = await merchRepositories.updateMerch({ image, title, price, merchId });
     return merch;
