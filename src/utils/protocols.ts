@@ -70,14 +70,14 @@ export type Merch = {
     userId: number,
     image: string,
     title: string,
-    price: number,
+    price: string,
 };
 
 export type EditMerch = {
     merchId: number,
     image: string,
     title: string,
-    price: number,
+    price: string,
 };
 
 export type NewMerch = Omit<Merch, "id" | "userId">

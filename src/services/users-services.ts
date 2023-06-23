@@ -41,7 +41,7 @@ async function retrieveUsers() {
 async function retrieveSession(userToken: string) {
     const result = await userRepositories.findSessionByToken(userToken);
     if (!result) throw errors.notFoundError();
-    return result.id;
+    return result.userId;
 }
 
 async function retrieveSessionToDelete(userToken: string) {

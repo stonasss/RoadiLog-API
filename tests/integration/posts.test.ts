@@ -10,3 +10,16 @@ beforeAll(async () => {
 });
 
 const server = supertest(app);
+
+describe('GET /posts', () => {
+    beforeAll(async () => {
+        await cleanDb();
+    });
+
+    const generateValidUser = () => ({
+        name: faker.internet.userName(),
+        email: faker.internet.email(),
+        image: faker.image.imageUrl(),
+        password: faker.internet.password(6),
+    });
+})
