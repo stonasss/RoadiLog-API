@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/app.js",
-    "dev": "nodemon src/app.ts"
+    "test": "dotenv -e .env.test npm run prisma:migrate:deploy & dotenv -e .env.test jest -- -i",
+    "start": "npm run prisma:migrate:deploy && node dist/src/app.js",
+    "dev": "nodemon src/app.ts",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy"
   },
   "repository": {
     "type": "git",

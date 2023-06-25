@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - 5433:5432
+    env_file:
+      - RoadiLog-API/.env
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+
+  node:
+    container_name: node
+    build: ./RoadiLog-API
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgres
+    env_file:
+      - RoadiLog-API/.env
+
+volumes:
+  postgres-volume:
