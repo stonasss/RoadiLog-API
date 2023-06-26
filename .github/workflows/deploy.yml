@@ -33,7 +33,7 @@ jobs:
       - name: Create front-end env file
         uses: SpicyPizza/create-envfile@v1.3.1
         with:
-          envkey_VITE_APP_BACKEND_URL: ${{secrets.VITE_APP_BACKEND_URL}}
+          envkey_VITE_REACT_APP_API_BASE_URL: ${{secrets.VITE_REACT_APP_API_BASE_URL}}
           directory: front-end
           file_name: .env
           fail_on_empty: true
