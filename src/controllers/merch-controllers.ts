@@ -7,11 +7,14 @@ import { userServices } from "../services/users-services";
 import { merchServices } from "../services/merch-services";
 
 async function newMerch(req: Request, res: Response) {
-    const merch = req.body as NewMerch
+    const merch = req.body as NewMerch;
     const userToken = res.locals.user;
 
-    const { error } = merchSchema.validate(merch)
-    if (error) return res.status(httpStatus.BAD_REQUEST).send({ message: error.message });
+    const { error } = merchSchema.validate(merch);
+    if (error)
+        return res
+            .status(httpStatus.BAD_REQUEST)
+            .send({ message: error.message });
 
     const { image, title, price } = req.body;
 
@@ -19,13 +22,18 @@ async function newMerch(req: Request, res: Response) {
         const userId = await userServices.retrieveSession(userToken);
         if (!userId) return res.status(httpStatus.UNAUTHORIZED);
 
-        const result = await merchServices.createMerch({ image, title, price, userId });
+        const result = await merchServices.createMerch({
+            image,
+            title,
+            price,
+            userId,
+        });
         return res.status(httpStatus.CREATED).send({ result });
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
     }
-};
+}
 
 async function deleteMerch(req: Request, res: Response) {
     const { id } = req.params as CheckId;
@@ -33,18 +41,22 @@ async function deleteMerch(req: Request, res: Response) {
 
     try {
         const merchExists = await merchServices.getMerchById(id);
-        if (!merchExists) return res.status(httpStatus.BAD_REQUEST).send("Merch does not exist");
+        if (!merchExists)
+            return res
+                .status(httpStatus.BAD_REQUEST)
+                .send("Merch does not exist");
 
         const userId = await userServices.retrieveSession(userToken);
-        if (merchExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
+        if (merchExists.userId !== userId)
+            return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         await merchServices.deleteMerch(id);
         return res.status(httpStatus.OK).send("Merch deleted");
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
-    };
-};
+    }
+}
 
 async function updateMerch(req: Request, res: Response) {
     const { id } = req.params as CheckId;
@@ -52,24 +64,36 @@ async function updateMerch(req: Request, res: Response) {
     const merch = req.body as NewMerch;
 
     const { error } = merchSchema.validate(merch);
-    if (error) return res.status(httpStatus.BAD_REQUEST).send({ message: error.message });
+    if (error)
+        return res
+            .status(httpStatus.BAD_REQUEST)
+            .send({ message: error.message });
 
     const { image, title, price } = req.body;
 
     try {
         const merchExists = await merchServices.getMerchById(id);
-        if (!merchExists) return res.status(httpStatus.BAD_REQUEST).send("Merch does not exist");
+        if (!merchExists)
+            return res
+                .status(httpStatus.BAD_REQUEST)
+                .send("Merch does not exist");
 
-        const userId = await userServices.retrieveSession(userToken)
-        if (merchExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
+        const userId = await userServices.retrieveSession(userToken);
+        if (merchExists.userId !== userId)
+            return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
-        const result = await merchServices.updateMerch({ image, title, price, id });
+        const result = await merchServices.updateMerch({
+            image,
+            title,
+            price,
+            id,
+        });
         return res.status(httpStatus.OK).send({ result });
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
-    };
-};
+    }
+}
 
 async function getMerch(req: Request, res: Response) {
     try {
@@ -78,8 +102,8 @@ async function getMerch(req: Request, res: Response) {
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
-    };
-};
+    }
+}
 
 async function getMerchByUserId(req: Request, res: Response) {
     const { id } = req.params as CheckId;
@@ -87,8 +111,9 @@ async function getMerchByUserId(req: Request, res: Response) {
 
     try {
         const sessionId = await userServices.retrieveSession(userToken);
-        const userId = await userServices.retrieveUserById(id)
-        if (userId.id !== sessionId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+        const userId = await userServices.retrieveUserById(id);
+        if (userId.id !== sessionId)
+            return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         const userMerch = await merchServices.getMerchByUserId(id);
         return res.status(httpStatus.OK).send({ userMerch });
@@ -104,4 +129,4 @@ export const merchControllers = {
     getMerchByUserId,
     updateMerch,
     deleteMerch,
-}
+};

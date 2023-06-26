@@ -1,8 +1,12 @@
 import prisma from "../config/database";
 import { EditProject, ValidProject } from "../utils/protocols";
 
-
-async function createProject({ name, instruments, description, userId }: ValidProject) {
+async function createProject({
+    name,
+    instruments,
+    description,
+    userId,
+}: ValidProject) {
     return prisma.projects.create({
         data: {
             userId,
@@ -11,7 +15,7 @@ async function createProject({ name, instruments, description, userId }: ValidPr
             description,
         },
     });
-};
+}
 
 async function deleteProject(projectId: number) {
     return prisma.projects.delete({
@@ -19,9 +23,14 @@ async function deleteProject(projectId: number) {
             id: projectId,
         },
     });
-};
+}
 
-async function updateProject({ name, instruments, description, projectId }: EditProject) {
+async function updateProject({
+    name,
+    instruments,
+    description,
+    projectId,
+}: EditProject) {
     return prisma.projects.update({
         where: {
             id: projectId,
@@ -32,11 +41,11 @@ async function updateProject({ name, instruments, description, projectId }: Edit
             description,
         },
     });
-};
+}
 
 async function getProjects() {
     return prisma.projects.findMany();
-};
+}
 
 async function getProjectById(projectId: number) {
     return prisma.projects.findFirst({
@@ -44,7 +53,7 @@ async function getProjectById(projectId: number) {
             id: projectId,
         },
     });
-};
+}
 
 async function getProjectsByUser(userId: number) {
     return prisma.projects.findMany({
@@ -52,7 +61,7 @@ async function getProjectsByUser(userId: number) {
             userId,
         },
     });
-};
+}
 
 export const projectRepositories = {
     createProject,

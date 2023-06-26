@@ -1,32 +1,39 @@
-import { Request, Response } from 'express';
-import httpStatus from 'http-status';
-import { errorHandler } from '../middlewares/error-handler-middlware';
-import { ApplicationError, CheckId, NewPost } from '../utils/protocols';
-import { postSchema } from '../schemas/posts-schema';
-import { postServices } from '../services/posts-services';
-import { userServices } from '../services/users-services';
+import { Request, Response } from "express";
+import httpStatus from "http-status";
+import { errorHandler } from "../middlewares/error-handler-middlware";
+import { ApplicationError, CheckId, NewPost } from "../utils/protocols";
+import { postSchema } from "../schemas/posts-schema";
+import { postServices } from "../services/posts-services";
+import { userServices } from "../services/users-services";
 
 async function newPost(req: Request, res: Response) {
     const post = req.body as NewPost;
     const userToken = res.locals.user;
 
-    const { error } = postSchema.validate(post)
-    if (error) return res.status(httpStatus.BAD_REQUEST).send({ message: error.message });
+    const { error } = postSchema.validate(post);
+    if (error)
+        return res
+            .status(httpStatus.BAD_REQUEST)
+            .send({ message: error.message });
 
     const { title, description, link } = req.body;
 
-    try { 
-        const userId = await userServices.retrieveSession(userToken)
+    try {
+        const userId = await userServices.retrieveSession(userToken);
         if (!userId) return res.status(httpStatus.UNAUTHORIZED);
 
-        const result = await postServices.createPost({ title, description, link, userId });
+        const result = await postServices.createPost({
+            title,
+            description,
+            link,
+            userId,
+        });
         return res.status(httpStatus.CREATED).send({ result });
     } catch (err) {
-        
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
-    };
-};
+    }
+}
 
 async function deletePost(req: Request, res: Response) {
     const { id } = req.params as CheckId;
@@ -34,43 +41,59 @@ async function deletePost(req: Request, res: Response) {
 
     try {
         const postExists = await postServices.getPostById(id);
-        if (!postExists) return res.status(httpStatus.BAD_REQUEST).send("Post does not exist");
+        if (!postExists)
+            return res
+                .status(httpStatus.BAD_REQUEST)
+                .send("Post does not exist");
 
-        const userId = await userServices.retrieveSession(userToken)
-        if (postExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+        const userId = await userServices.retrieveSession(userToken);
+        if (postExists.userId !== userId)
+            return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         await postServices.deletePost(id);
-        return res.status(httpStatus.OK).send("Post deleted")
+        return res.status(httpStatus.OK).send("Post deleted");
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
-    };
-};
+    }
+}
 
 async function updatePost(req: Request, res: Response) {
     const { id } = req.params as CheckId;
     const userToken = res.locals.user;
     const post = req.body as NewPost;
 
-    const { error } = postSchema.validate(post)
-    if (error) return res.status(httpStatus.BAD_REQUEST).send({ message: error.message });
+    const { error } = postSchema.validate(post);
+    if (error)
+        return res
+            .status(httpStatus.BAD_REQUEST)
+            .send({ message: error.message });
 
     const { title, description, link } = req.body;
 
     try {
         const postExists = await postServices.getPostById(id);
-        if (!postExists) return res.status(httpStatus.BAD_REQUEST).send("Post does not exist");
+        if (!postExists)
+            return res
+                .status(httpStatus.BAD_REQUEST)
+                .send("Post does not exist");
 
-        const userId = await userServices.retrieveSession(userToken)
-        if (postExists.userId !== userId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+        const userId = await userServices.retrieveSession(userToken);
+        if (postExists.userId !== userId)
+            return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
-        const result = await postServices.updatePost({ title, description, link, id });
-        return res.status(httpStatus.OK).send({ result })
+        const result = await postServices.updatePost({
+            title,
+            description,
+            link,
+            id,
+        });
+        return res.status(httpStatus.OK).send({ result });
     } catch (err) {
         const error = err as ApplicationError | Error;
         errorHandler(error, req, res);
-    };
-};
+    }
+}
 
 async function getPosts(req: Request, res: Response) {
     try {
@@ -88,8 +111,9 @@ async function getPostsByUserId(req: Request, res: Response) {
 
     try {
         const sessionId = await userServices.retrieveSession(userToken);
-        const userId = await userServices.retrieveUserById(id)
-        if (userId.id !== sessionId) return res.status(httpStatus.UNAUTHORIZED).send("Invalid request")
+        const userId = await userServices.retrieveUserById(id);
+        if (userId.id !== sessionId)
+            return res.status(httpStatus.UNAUTHORIZED).send("Invalid request");
 
         const userPosts = await postServices.getPostsByUserId(id);
         return res.status(httpStatus.OK).send({ userPosts });
@@ -105,4 +129,4 @@ export const postControllers = {
     getPostsByUserId,
     deletePost,
     updatePost,
-}
+};

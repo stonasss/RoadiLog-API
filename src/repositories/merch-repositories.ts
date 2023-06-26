@@ -10,7 +10,7 @@ async function createMerch({ image, title, price, userId }: ValidMerch) {
             price,
         },
     });
-};
+}
 
 async function deleteMerch(merchId: number) {
     return prisma.merch.delete({
@@ -18,7 +18,7 @@ async function deleteMerch(merchId: number) {
             id: merchId,
         },
     });
-};
+}
 
 async function updateMerch({ image, title, price, merchId }: EditMerch) {
     return prisma.merch.update({
@@ -31,11 +31,11 @@ async function updateMerch({ image, title, price, merchId }: EditMerch) {
             price,
         },
     });
-};
+}
 
 async function getMerch() {
     return prisma.merch.findMany();
-};
+}
 
 async function getMerchById(merchId: number) {
     return prisma.merch.findFirst({
@@ -43,7 +43,7 @@ async function getMerchById(merchId: number) {
             id: merchId,
         },
     });
-};
+}
 
 async function getMerchByUser(userId: number) {
     return prisma.merch.findMany({
@@ -51,7 +51,7 @@ async function getMerchByUser(userId: number) {
             userId,
         },
     });
-};
+}
 
 export const merchRepositories = {
     createMerch,

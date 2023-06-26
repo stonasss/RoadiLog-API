@@ -10,11 +10,11 @@ async function createPost({ title, description, link, userId }: ValidPost) {
             link,
         },
     });
-};
+}
 
 async function getPosts() {
     return prisma.posts.findMany();
-};
+}
 
 async function getPostById(postId: number) {
     return prisma.posts.findFirst({
@@ -22,7 +22,7 @@ async function getPostById(postId: number) {
             id: postId,
         },
     });
-};
+}
 
 async function deletePost(postId: number) {
     return prisma.posts.delete({
@@ -30,7 +30,7 @@ async function deletePost(postId: number) {
             id: postId,
         },
     });
-};
+}
 
 async function updatePost({ title, description, link, postId }: EditPost) {
     return prisma.posts.update({
@@ -43,7 +43,7 @@ async function updatePost({ title, description, link, postId }: EditPost) {
             link,
         },
     });
-};
+}
 
 async function getPostsByUser(userId: number) {
     return prisma.posts.findMany({
@@ -51,7 +51,7 @@ async function getPostsByUser(userId: number) {
             userId,
         },
     });
-};
+}
 
 export const postRepositories = {
     createPost,
@@ -60,4 +60,4 @@ export const postRepositories = {
     getPostsByUser,
     deletePost,
     updatePost,
-}
+};
