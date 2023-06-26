@@ -8,6 +8,8 @@ services:
       - .env
     volumes:
       - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - roadilog-network
 
   node:
     container_name: node
@@ -18,6 +20,12 @@ services:
       - postgres
     env_file:
       - .env
+    networks:
+      - roadilog-network
 
 volumes:
   postgres-volume:
+
+networks:
+  roadilog-network:
+    external: true
