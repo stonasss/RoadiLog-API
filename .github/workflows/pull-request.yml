@@ -13,6 +13,7 @@ jobs:
           envkey_POSTGRES_USER: "postgres"
           envkey_POSTGRES_PASSWORD: "root"
           envkey_POSTGRES_DB: "roadilog"
+          envkey_SECRET_KEY: "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY4NTczMDA5OCwiaWF0IjoxNjg1NzMwMDk4fQ.O5syjbw7zwBFPJN72TSnVGgzk1-p7B90A0vLILy5fxA"
           envkey_DATABASE_URL: "postgresql://postgres:root@postgres:5432/roadilog"
           directory: .
           file_name: .env.test
