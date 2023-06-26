@@ -2,7 +2,11 @@ import httpStatus from "http-status";
 import { Request, Response } from "express";
 import { ApplicationError } from "../utils/protocols";
 
-export function errorHandler(err: ApplicationError | Error, req: Request, res: Response){
+export function errorHandler(
+    err: ApplicationError | Error,
+    req: Request,
+    res: Response
+) {
     if (err.name === "ConflictError" || err.name === "DuplicatedEmailError") {
         return res.status(httpStatus.CONFLICT).send({
             message: err.message,
@@ -20,5 +24,4 @@ export function errorHandler(err: ApplicationError | Error, req: Request, res: R
         error: "InternalServerError",
         message: "Internal Server Error",
     });
-};
-
+}

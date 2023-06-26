@@ -10,6 +10,6 @@ router
     .use("/", userRoutes)
     .use("/posts", postRoutes)
     .use("/projects", projectRoutes)
-    .use("/merch", merchRoutes)
+    .use("/merch", merchRoutes);
 
 export default router;
