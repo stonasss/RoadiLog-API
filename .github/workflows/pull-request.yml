@@ -11,9 +11,9 @@ jobs:
         with:
           envkey_PORT: 5000
           envkey_POSTGRES_USER: "postgres"
-          envkey_POSTGRES_PASSWORD: "postgres"
+          envkey_POSTGRES_PASSWORD: "root"
           envkey_POSTGRES_DB: "roadilog"
-          envkey_DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/roadilog"
+          envkey_DATABASE_URL: "postgresql://postgres:root@postgres:5432/roadilog"
           directory: .
           file_name: .env.test
       - name: Run tests
