@@ -40,8 +40,10 @@ jobs:
       - name: Build and deploy back-end
         run: |
           cd back-end
+          docker compose down
           docker compose up --build -d
       - name: Build and deploy front-end
         run: |
           cd front-end
+          docker compose down
           docker compose up --build -d
