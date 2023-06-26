@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+      - main
+name: Build and Deploy on AWS
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create back-end env file
+        uses: SpicyPizza/create-envfile@v1.3.1
+        with:
+          envkey_PORT: ${{secrets.PORT}}
+          envkey_DATABASE_URL: ${{secrets.DATABASE_URL}}
+          envkey_POSTGRES_USERNAME: ${{secrets.POSTGRES_USERNAME}}
+          envkey_POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+          envkey_SECRET_KEY: ${{secrets.SECRET_KEY}}
+          envkey_POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+          directory: .
+          file_name: .env
+          fail_on_empty: true
+      - name: Create front-end env file
+        uses: SpicyPizza/create-envfile@v1.3.1
+        with:
+          envkey_VITE_APP_BACKEND_URL: ${{secrets.VITE_APP_BACKEND_URL}}
+          directory: front-end
+          file_name: .env
+          fail_on_empty: true
+      - name: Run docker compose down
+        run: docker compose down # Não apague os volumes, senão o banco de dados de produção vai ser limpo.
+      - name: Delete React docker volume
+        run: if docker volume ls --quiet --filter name=RoadiLog-API_react-volume | grep -q .; then docker volume rm RoadiLog-API_react-volume; fi
+      - name: Run docker compose up
+        run: docker compose up --build -d
